@@ -40,7 +40,12 @@ int play_vid(){
 
 void on_change_trackbar(int, void*)
 {
+  if(index_current_frame >= vid_src.get(CV_CAP_PROP_FRAME_COUNT)){
+    return;
+  }
+
   vid_src.set(CV_CAP_PROP_POS_FRAMES, index_current_frame);
+
   if(index_current_frame >= NB_READING_FRAMES){
     Mat current_frame;
     vid_src >> current_frame;
