@@ -14,18 +14,28 @@ using namespace std;
 VideoCapture vid_src;
 int index_current_frame = 0;
 int video_playing = 0;
+int has_to_print_goto = 0;
 
-void play_vid(){
+int play_vid(){
   video_playing = 1;
 
-  for(; index_current_frame < NB_READING_FRAMES; index_current_frame++){
+  for(; index_current_frame < NB_READING_FRAMES && cvGetWindowHandle(NAME_WINDOW) != NULL; index_current_frame++){
     Mat current_frame;
     vid_src >> current_frame;
-    setTrackbarPos("current_frame_vid", NAME_WINDOW, index_current_frame);
     imshow(NAME_WINDOW, current_frame);
-    waitKey(1000 / vid_src.get(CV_CAP_PROP_FPS));
+
+    if(cvGetTrackbarPos("current_frame_vid", NAME_WINDOW) >= 0){
+      setTrackbarPos("current_frame_vid", NAME_WINDOW, index_current_frame);
+      has_to_print_goto = 0;
+    }
+
+    if((char)27 == (char)waitKey(1000 / vid_src.get(CV_CAP_PROP_FPS))){
+      return 0;
+    }
   }
   video_playing = 0;
+
+  return 1;
 }
 
 void on_change_trackbar(int, void*)
@@ -36,7 +46,10 @@ void on_change_trackbar(int, void*)
     vid_src >> current_frame;
     imshow(NAME_WINDOW, current_frame);
   }
-  cout << "go to frame number = " << index_current_frame << std::endl;
+  if(has_to_print_goto)
+    cout << "go to frame number = " << index_current_frame << std::endl;
+  else
+    has_to_print_goto = 1;
 }
 
 void
@@ -60,9 +73,17 @@ process(const char* vidname)
 
   while(1){
     if (!video_playing && index_current_frame < NB_READING_FRAMES){
-      play_vid();
+      if(!play_vid())//exit if user presses escape
+        return;
     }
-    waitKey(10);
+
+    if(cvGetWindowHandle(NAME_WINDOW) == NULL){//exit if window has been closed
+      return;
+    }
+
+    if((char)27 == (char)waitKey(10)){//exit if user presses exit
+      return;
+    }
   }
 }
 
