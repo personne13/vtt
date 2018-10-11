@@ -17,7 +17,7 @@ int video_playing = 0;
 
 void play_vid(){
   video_playing = 1;
-  cout << "called play_vid: " << index_current_frame << std::endl;
+
   for(; index_current_frame < NB_READING_FRAMES; index_current_frame++){
     Mat current_frame;
     vid_src >> current_frame;
@@ -30,13 +30,13 @@ void play_vid(){
 
 void on_change_trackbar(int, void*)
 {
-  cout << index_current_frame << std::endl;
   vid_src.set(CV_CAP_PROP_POS_FRAMES, index_current_frame);
   if(index_current_frame >= NB_READING_FRAMES){
     Mat current_frame;
     vid_src >> current_frame;
     imshow(NAME_WINDOW, current_frame);
   }
+  cout << "go to frame number = " << index_current_frame << std::endl;
 }
 
 void
