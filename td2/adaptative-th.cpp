@@ -19,30 +19,6 @@ process(const char* imsname,
   (void) j0;
   (void) w;
   (void) h;
-
-
-	Mat img_src = imread(imsname, CV_LOAD_IMAGE_COLOR);
-	if(!img_src.data){
-    cout <<  "Could not open or find the image" << std::endl ;
-	  return;
-	}
-
-	Mat crop(w, h, CV_8UC3);
-
-	int i, j;
-	for (i=0; i<w; i++) {
-		for (j=0; j<h; j++) {
-			crop.at<Vec3b>(i, j) = img_src.at<Vec3b>(i0 + i, j0 + j);
-		}
-	}
-
-	Mat img_rect = img_src(Rect(j0, i0, h, w));
-
-	Mat img_diff = crop - img_rect;
-	imshow("diff=((crop)-(crop-cv))", img_diff);
-	waitKey(0);
-	imwrite("crop.png", crop);
-	imwrite("crop-ocv.png", img_rect);
 }
 
 void
