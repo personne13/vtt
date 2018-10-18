@@ -16,7 +16,9 @@ BIN=\
 all: $(BIN)
 
 .PHONY: test
-#test:
+
+test:
+	./hsv-modification 100 0 0 ../data/horse.png horse-hsv.png
 
 
 .PHONY: clean
