@@ -7,12 +7,14 @@
 using namespace cv;
 using namespace std;
 
+#define EPSILON 2
+
 void
 process(const char* imsname)
 {
   (void) imsname;
   Mat rgb[3];
-  Mat YCbCr[3];
+  Mat YCrCb[3];
 	Mat image_src = imread(imsname, CV_LOAD_IMAGE_COLOR);
 
 
@@ -23,15 +25,41 @@ process(const char* imsname)
     // Mat ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCR_CB)
 
 	split(image_src, rgb);
-	imshow("R", rgb[0]);
+	imshow("B", rgb[0]);
 	imshow("G", rgb[1]);
-	imshow("B", rgb[2]);
+	imshow("R", rgb[2]);
+
+
+  Mat gray;
+  cvtColor(image_src, gray, COLOR_RGB2GRAY);
+  imshow("RGBtoGRAY", gray);
+
+
+
   Mat ycrcb;
   cvtColor(image_src,ycrcb,COLOR_BGR2YCrCb);
-  split(ycrcb, YCbCr);
-	imshow("Y", YCbCr[0]);
-	imshow("Cr", YCbCr[1]);
-	imshow("Cb", YCbCr[2]);
+  split(ycrcb, YCrCb);
+	imshow("Y", YCrCb[0]);
+	imshow("Cr", YCrCb[1]);
+	imshow("Cb", YCrCb[2]);
+
+  Mat rgb2ycrcb2rgb;
+  cvtColor(ycrcb, rgb2ycrcb2rgb, COLOR_YCrCb2BGR);
+  imshow("RGB->YCrCb->RGB", rgb2ycrcb2rgb);
+
+  if(norm(gray, YCrCb[0], NORM_INF) < EPSILON){
+    cout << "Both images Y and gray color are the same" << endl;
+  }
+  else{
+    cout << "Both images Y and gray color are different" << endl;
+  }
+
+  if(norm(image_src, rgb2ycrcb2rgb, NORM_INF) < EPSILON){
+    cout << "Base and converted images are the same" << endl;
+  }
+  else{
+    cout << "Base and converted images are different" << endl;
+  }
 
   waitKey(0);
 }

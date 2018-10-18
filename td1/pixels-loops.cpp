@@ -34,8 +34,14 @@ void compute_matrixoperation_method(Mat im){
 
 void compute_pointer_method(Mat im){
   (void)im;
-  for(int i = 0; i < im.rows; i++){
-    //Vec3b
+  Vec3b v(32, 32, 32);
+
+  for(int r = 0; r < im.rows; r++) {
+      cv::Vec3b* ptr = im.ptr<cv::Vec3b>(r);
+
+      for(int c = 0; c < im.cols; c++) {
+          ptr[c] = 1/64.0 * ptr[c] * 64 + v;
+        }
   }
 }
 
