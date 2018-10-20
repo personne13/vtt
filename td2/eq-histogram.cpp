@@ -17,7 +17,7 @@ void computeHistogram(std::vector<int> &H, Mat &src) {
 
     MatIterator_<uchar> end = src.end<uchar>();
     for (MatIterator_<uchar> i = src.begin<uchar>(); i != end; i++) {
-      uchar k = i[0]; // image is supposed to be in gray color
+      uchar k = i[0];
       H[k]++;
     }
 }

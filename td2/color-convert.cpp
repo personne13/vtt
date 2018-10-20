@@ -19,10 +19,9 @@ process(const char* imsname)
 
 
 	if(!image_src.data){
-      cout <<  "Could not open or find the image" << std::endl ;
-      return;
-		}
-    // Mat ycrcb = cv2.cvtColor(img, cv2.COLOR_BGR2YCR_CB)
+    cout <<  "Could not open or find the image" << std::endl ;
+    return;
+	}
 
 	split(image_src, rgb);
 	imshow("B", rgb[0]);
