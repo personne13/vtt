@@ -19,16 +19,6 @@ void computeHistogram(std::vector<int> &H, Mat &src) {
     }
 }
 
-void computeCumulatedNormalizedHistogram(std::vector<float> &Hcn,std::vector<int> &H, float MN) {
-  int size = H.size();
-  Hcn[0] = H[0]/MN;
-  for (int i = 1; i < size; i++) {
-    Hcn[i] = Hcn[i-1] + H[i]/MN;
-  }
-
-}
-
-
 float compute_p1(std::vector<int> &H, int t, float MN) {
   float p1 = 0;
   for (int i = 0; i < t; i++) {
@@ -82,7 +72,8 @@ float compute_u2(std::vector<int> &H, int t) {
 }
 
 float compute_variance (float p1, float p2, float u1, float u2) {
-  return p1 * p2 * pow((u1 - u2), 2);
+  float result = p1 * p2 * pow((u1 - u2), 2);
+  return result;
 }
 
 void otsu (Mat &src_gray) {
@@ -91,7 +82,6 @@ void otsu (Mat &src_gray) {
   float MN = src_gray.rows * src_gray.cols;
 
   computeHistogram(H, src_gray);
-  computeCumulatedNormalizedHistogram(Hcn, H, MN);
 
 
   float p_1[256], p_2[256], u_1[256], u_2[256];
@@ -106,7 +96,7 @@ void otsu (Mat &src_gray) {
 
     float variance_max = 0;
   	float best = 0;
-  	for (int t = 0; t < 254; t++)
+  	for (int t = 0; t < 255; t++)
   	{
       int vk = compute_variance(p_1[t], p_2[t], u_1[t], u_2[t]);
 
