@@ -98,7 +98,7 @@ void otsu (Mat &src_gray) {
   	float best = 0;
   	for (int t = 0; t < 255; t++)
   	{
-      int vk = compute_variance(p_1[t], p_2[t], u_1[t], u_2[t]);
+      float vk = compute_variance(p_1[t], p_2[t], u_1[t], u_2[t]);
 
   		if (vk > variance_max)
   		{
@@ -111,13 +111,13 @@ void otsu (Mat &src_gray) {
   	{
   		for (int j = 0; j < src_gray.cols; j++)
   		{
-  			if (src_gray.at<uchar>(i, j) < best)
+  			if (src_gray.at<uchar>(j, i) < best)
   			{
-  				src_gray.at<uchar>(i, j) = 0;
+  				src_gray.at<uchar>(j, i) = 0;
   			}
   			else
   			{
-  				src_gray.at<uchar>(i, j) = 255;
+  				src_gray.at<uchar>(j, i) = 255;
   			}
   		}
   }
