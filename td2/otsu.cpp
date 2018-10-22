@@ -111,13 +111,13 @@ void otsu (Mat &src_gray) {
   	{
   		for (int j = 0; j < src_gray.cols; j++)
   		{
-  			if (src_gray.at<uchar>(j, i) < best)
+  			if (src_gray.at<uchar>(i, j) < best)
   			{
-  				src_gray.at<uchar>(j, i) = 0;
+  				src_gray.at<uchar>(i, j) = 0;
   			}
   			else
   			{
-  				src_gray.at<uchar>(j, i) = 255;
+  				src_gray.at<uchar>(i, j) = 255;
   			}
   		}
   }
