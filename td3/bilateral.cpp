@@ -78,7 +78,6 @@ void process(int sigma_s, int sigma_g, const char* ims, const char * imd){
   bilateralFilter(image_src, image_dst_oc, Gg.size(), sigma_g, sigma_s);
 
   imwrite(imd, image_dst);
-  imshow(imd, image_dst);
   imshow("diff", image_dst - image_dst_oc);
   waitKey(0);
 }

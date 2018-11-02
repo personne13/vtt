@@ -8,9 +8,6 @@ using namespace cv;
 using namespace std;
 
 void median_filter(Mat &image_src, Mat &image_dst, int r){
-  (void)image_src;
-  (void)image_dst;
-  (void)r;
   int nb_neighbors = 0;
   std::vector<uchar> neighbors((2 * r + 1) * (2 * r + 1));
 
@@ -35,9 +32,6 @@ void median_filter(Mat &image_src, Mat &image_dst, int r){
 }
 
 void process(int r, const char* ims, const char * imd){
-  (void)r;
-  (void)imd;
-
   Mat image_src = imread(ims, CV_LOAD_IMAGE_GRAYSCALE);
 
 	if(!image_src.data){
