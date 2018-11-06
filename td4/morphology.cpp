@@ -14,14 +14,13 @@ mm(Mat se, Mat ims, Mat imd, void (*pf)(uchar, uchar*))
 void
 maximum(uchar val, uchar* max)
 {
-  (void) val;
-  (void) max;
+  if(val > *max)
+    *max = val;
 }
 
 void
 minimum(uchar val, uchar* min)
 {
-  (void) val;
-  (void) min;
+  if(val < *min)
+    *min = val;
 }
-
