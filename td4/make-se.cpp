@@ -75,7 +75,7 @@ process(const int shape, const int halfsize, const char* imdname)
   else if(shape == CROSS){
     for(int i = 0; i < dst.cols; i++){
       dst.at<uchar>(i, dst.rows - i - 1) = 255;
-      dst.at<uchar>(dst.rows - i - 1, i) = 255;
+      dst.at<uchar>(i, i) = 255;
     }
   }
   else if(shape == PLUS){

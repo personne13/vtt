@@ -29,7 +29,7 @@ process(const char* sename, const char* imsname, const char* imdname)
 
   Mat res = image_src.clone();
 
-  mm(pattern, image_src, res, maximum);
+  mm(pattern, image_src, res, minimum);
 
   imwrite(imdname, res);
   cout << "file written: " << imdname << endl;

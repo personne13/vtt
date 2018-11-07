@@ -1,10 +1,11 @@
-CPPFLAGS= -I. -I/opt/opencv/include 
+CPPFLAGS= -I. -I/opt/opencv/include
 CXXFLAGS= -Wall -Wextra -Werror
 LDFLAGS = -Wl,-R/opt/opencv/lib -L/opt/opencv/lib
 LDLIBS=\
 	-lopencv_core\
 	-lopencv_imgproc\
-	-lopencv_highgui
+	-lopencv_highgui\
+	-lopencv_imgcodecs
 
 #modify DATA or VIEWER path command if not applicable
 VIEWER= pvisu
@@ -14,6 +15,7 @@ OBJ= morphology.o
 BIN= \
 	make-se\
 	dilation\
+	erosion\
 	labeling
 
 .PHONY: all
@@ -44,5 +46,3 @@ clean:
 .PHONY: cleanall
 cleanall: clean
 	$(RM) $(BIN) *.o *.pdf
-
-
