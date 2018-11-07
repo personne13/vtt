@@ -16,6 +16,8 @@ BIN= \
 	make-se\
 	dilation\
 	erosion\
+	opening\
+	closing\
 	labeling
 
 .PHONY: all
