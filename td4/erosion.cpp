@@ -38,7 +38,7 @@ process(const char* sename, const char* imsname, const char* imdname)
 void
 usage (const char *s)
 {
-  std::cerr<<"Usage: "<<s<<"im-se ims imd"<<std::endl;
+  std::cerr<<"Usage: "<<s<<" im-se ims imd"<<std::endl;
   exit(EXIT_FAILURE);
 }
 
