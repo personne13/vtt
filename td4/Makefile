@@ -5,7 +5,6 @@ LDLIBS=\
 	-lopencv_core\
 	-lopencv_imgproc\
 	-lopencv_highgui\
-	-lopencv_imgcodecs
 
 #modify DATA or VIEWER path command if not applicable
 VIEWER= pvisu
@@ -20,7 +19,8 @@ BIN= \
 	closing\
 	labeling\
 	difference\
-	binarization
+	binarization\
+	add-boundary
 
 .PHONY: all
 all: $(BIN)
@@ -52,7 +52,13 @@ extract-gear: all
 .PHONY: extract-cell
 extract-cell:
 	$(VIEWER) $(DATA)/cell.png;
-	./labeling $(DATA)/cell-bin.png
+	./labeling $(DATA)/cell-bin.png cell-r.png cell-res-color.png
+	./make-se 1 2 diamond.png
+	./erosion diamond.png ../data/cell-bin.png erosion.png
+	./dilation diamond.png ../data/cell-bin.png dilation.png
+	./difference dilation.png erosion.png cell-res-boundary.png
+	./add-boundary $(DATA)/cell.png cell-res-boundary.png cell-final.png
+	$(VIEWER) cell-res-boundary.png cell-res-color.png cell-final.png
 
 .PHONY: clean
 clean:
