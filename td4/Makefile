@@ -18,7 +18,9 @@ BIN= \
 	erosion\
 	opening\
 	closing\
-	labeling
+	labeling\
+	difference\
+	binarization
 
 .PHONY: all
 all: $(BIN)
@@ -33,8 +35,19 @@ test-deploy: all
 	make extract-cell
 
 .PHONY: extract-gear
-extract-gear:
-	$(VIEWER) $(DATA)/gear.png;
+extract-gear: all
+	@echo "binarizating image: $(DATA)/gear.png";
+	@./binarization 0 255 $(DATA)/gear.png gear.png > /dev/null;
+	@echo "creating disk ...";
+	@./make-se 2 10 disk.png > /dev/null;
+	@echo "opening operation ...";
+	@./opening disk.png gear.png circle.png > /dev/null;
+	@echo "computing difference...";
+	@./difference gear.png circle.png gear-res.png > /dev/null;
+	@echo "labeling result...";
+	@./labeling gear-res.png gear-labelled.png gear-res-color.png > /dev/null;
+	@$(VIEWER) gear-res.png gear-res-color.png;
+
 
 .PHONY: extract-cell
 extract-cell:
