@@ -20,7 +20,10 @@ BIN= \
 	labeling\
 	difference\
 	binarization\
-	add-boundary
+	add-boundary\
+	otsu\
+	median-filter\
+	bilateral
 
 .PHONY: all
 all: $(BIN)
@@ -50,15 +53,18 @@ extract-gear: all
 
 
 .PHONY: extract-cell
+	#./bilateral 10 30 $(DATA)/cell.png cellbb.png
+	#./binarization 0 255  cellbmf.png cellb.png
 extract-cell:
-	$(VIEWER) $(DATA)/cell.png;
-	./labeling $(DATA)/cell-bin.png cell-r.png cell-res-color.png
+	./median-filter 2 $(DATA)/cell.png cellbmf.png
+	./otsu cellbmf.png
+	./labeling cell-res.png cell-r.png cell-res-color.png
 	./make-se 1 2 diamond.png
-	./erosion diamond.png ../data/cell-bin.png erosion.png
-	./dilation diamond.png ../data/cell-bin.png dilation.png
+	./erosion diamond.png cell-res.png erosion.png
+	./dilation diamond.png cell-res.png dilation.png
 	./difference dilation.png erosion.png cell-res-boundary.png
 	./add-boundary $(DATA)/cell.png cell-res-boundary.png cell-final.png
-	$(VIEWER) cell-res-boundary.png cell-res-color.png cell-final.png
+	$(VIEWER) $(DATA)/cell.png cell-res-boundary.png cell-res-color.png cell-final.png cell-res.png
 
 .PHONY: clean
 clean:
