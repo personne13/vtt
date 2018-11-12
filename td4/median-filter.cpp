@@ -45,11 +45,6 @@ void process(int r, const char* ims, const char * imd){
   median_filter(image_src, image_dst, r);
 
   imwrite(imd, image_dst);
-  medianBlur(image_src, image_dst_oc, 2 * r + 1);
-
-  imshow("diff", image_dst - image_dst_oc);
-
-  waitKey(0);
 }
 
 void usage (const char *s) {

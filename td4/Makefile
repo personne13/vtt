@@ -5,6 +5,7 @@ LDLIBS=\
 	-lopencv_core\
 	-lopencv_imgproc\
 	-lopencv_highgui\
+	-lopencv_imgcodecs
 
 #modify DATA or VIEWER path command if not applicable
 VIEWER= pvisu
@@ -21,7 +22,6 @@ BIN= \
 	difference\
 	binarization\
 	add-boundary\
-	otsu\
 	median-filter\
 	bilateral
 
@@ -55,16 +55,20 @@ extract-gear: all
 .PHONY: extract-cell
 	#./bilateral 10 30 $(DATA)/cell.png cellbb.png
 	#./binarization 0 255  cellbmf.png cellb.png
-extract-cell:
-	./median-filter 2 $(DATA)/cell.png cellbmf.png
-	./otsu cellbmf.png
+extract-cell: all
+	./make-se 2 10 disk.png
+	./opening disk.png $(DATA)/cell.png cell_opened.png
+	./binarization 100 255 cell_opened.png cell_opened_bin.png
+	./median-filter 7 cell_opened_bin.png cell-res.png
 	./labeling cell-res.png cell-r.png cell-res-color.png
 	./make-se 1 2 diamond.png
 	./erosion diamond.png cell-res.png erosion.png
 	./dilation diamond.png cell-res.png dilation.png
 	./difference dilation.png erosion.png cell-res-boundary.png
-	./add-boundary $(DATA)/cell.png cell-res-boundary.png cell-final.png
+	./binarization 0 255 cell-res-boundary.png cell-res-boundary-bin.png
+	./add-boundary $(DATA)/cell.png cell-res-boundary-bin.png cell-final.png
 	$(VIEWER) $(DATA)/cell.png cell-res-boundary.png cell-res-color.png cell-final.png cell-res.png
+
 
 .PHONY: clean
 clean:
